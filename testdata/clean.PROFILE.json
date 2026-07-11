@@ -1,0 +1,16 @@
+{
+  "file_sha256": "a7ce16e8cd6e523ad4faa4b1ccd9abece9aef2fee510f635e90fa7f65afab4ef",
+  "n_records": 3,
+  "schemas": {
+    "id ,label ,text": 3
+  },
+  "label_dist": {
+    "legit": 2,
+    "fraud": 1
+  },
+  "records": {
+    "a1": "be2ccdf9f80978c1b6c2b1b9b5be6eb9a4d467cf787bd260cc5def9a06920c14",
+    "a2": "104e6e429769f86c76abd1d15879298db560e0a8197399971a7b5cb74a30055f",
+    "a3": "1d324ca4167f31841001e41a714c6b68ed69f0728802c040081b3420cf09bc45"
+  }
+}

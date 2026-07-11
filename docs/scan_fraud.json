@@ -1,0 +1,13 @@
+{
+  "bench": "/Users/zhujiehan/Desktop/fraud-detect-bench-zh/data/bench.jsonl",
+  "n_records": 120,
+  "near_threshold": 0.8,
+  "n_findings": 0,
+  "findings": {
+    "exact_dup": [],
+    "near_dup": [],
+    "gold_leak": [],
+    "cross_overlap": []
+  },
+  "note": "findings are review signals, not proof of training contamination"
+}

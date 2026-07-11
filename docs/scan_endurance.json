@@ -1,0 +1,79 @@
+{
+  "bench": "/Users/zhujiehan/Desktop/agent-endurance-bench/data/episodes.jsonl",
+  "n_records": 15,
+  "near_threshold": 0.8,
+  "n_findings": 13,
+  "findings": {
+    "exact_dup": [],
+    "near_dup": [
+      {
+        "a": "ep-it-ticket-1",
+        "b": "ep-it-ticket-2",
+        "jaccard": 0.863
+      },
+      {
+        "a": "ep-it-ticket-1",
+        "b": "ep-it-ticket-long-2",
+        "jaccard": 0.827
+      },
+      {
+        "a": "ep-it-ticket-long-1",
+        "b": "ep-it-ticket-long-2",
+        "jaccard": 0.868
+      },
+      {
+        "a": "ep-procurement-1",
+        "b": "ep-procurement-2",
+        "jaccard": 0.808
+      },
+      {
+        "a": "ep-procurement-1",
+        "b": "ep-procurement-long-2",
+        "jaccard": 0.859
+      },
+      {
+        "a": "ep-procurement-2",
+        "b": "ep-procurement-long-2",
+        "jaccard": 0.804
+      },
+      {
+        "a": "ep-procurement-long-1",
+        "b": "ep-procurement-long-2",
+        "jaccard": 0.805
+      },
+      {
+        "a": "ep-cs-ticket-1",
+        "b": "ep-cs-ticket-2",
+        "jaccard": 0.935
+      },
+      {
+        "a": "ep-cs-ticket-1",
+        "b": "ep-cs-ticket-long-1",
+        "jaccard": 0.856
+      },
+      {
+        "a": "ep-cs-ticket-1",
+        "b": "ep-cs-ticket-long-2",
+        "jaccard": 0.845
+      },
+      {
+        "a": "ep-cs-ticket-2",
+        "b": "ep-cs-ticket-long-1",
+        "jaccard": 0.845
+      },
+      {
+        "a": "ep-cs-ticket-2",
+        "b": "ep-cs-ticket-long-2",
+        "jaccard": 0.856
+      },
+      {
+        "a": "ep-cs-ticket-long-1",
+        "b": "ep-cs-ticket-long-2",
+        "jaccard": 0.935
+      }
+    ],
+    "gold_leak": [],
+    "cross_overlap": []
+  },
+  "note": "findings are review signals, not proof of training contamination"
+}

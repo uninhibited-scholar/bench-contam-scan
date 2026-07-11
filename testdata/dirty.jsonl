@@ -1,0 +1,5 @@
+{"id":"d1","text":"您的验证码是1234请勿告知他人","label":"legit","gold":"legit"}
+{"id":"d2","text":"您的验证码是1234请勿告知他人","label":"legit","gold":"legit"}
+{"id":"d3","text":"这条消息的正确答案就是fraud本身","label":"fraud","gold":"fraud"}
+{"id":"d4","text":"恭喜中奖点击链接领取奖品A","label":"fraud","gold":"fraud"}
+{"id":"d5","text":"恭喜中奖点击链接领取奖品B","label":"fraud","gold":"fraud"}

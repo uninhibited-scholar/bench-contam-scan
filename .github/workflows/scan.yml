@@ -1,0 +1,22 @@
+name: scan-selftest
+on: [push, pull_request]
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: clean testdata must pass (exit 0)
+        run: python3 scripts/scan.py testdata/clean.jsonl --text-field text --gold-field label --report /tmp/c.json
+      - name: dirty testdata must be caught (exit 1 expected)
+        run: |
+          if python3 scripts/scan.py testdata/dirty.jsonl --text-field text --gold-field gold --report /tmp/d.json; then
+            echo "ERROR: scanner failed to flag dirty testdata"; exit 1
+          else
+            echo "OK: dirty testdata flagged as expected"
+          fi
+      - name: fingerprint roundtrip
+        run: |
+          python3 scripts/fingerprint.py testdata/clean.jsonl --label-field label --out /tmp/p.json
+          python3 scripts/fingerprint.py testdata/clean.jsonl --label-field label --out /tmp/p.json --verify
