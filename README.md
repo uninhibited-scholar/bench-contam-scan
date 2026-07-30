@@ -42,6 +42,32 @@ agent-endurance-bench (15 ep):  near_dup 13  ← 真实且预期
 ```
 endurance 的 13 条 near-dup 是**正确的**信号：它的开局约束（`constraints` 字段）是模板化文本，同领域近乎一致。这演示了工具的用途——**它不判断"好坏"，只标出结构相似**，由作者判断是设计使然（模板 system prompt）还是数据缺陷（真重复）。跑 `python3 scripts/scan.py` 得到的报告在 `docs/scan_*.json`。
 
+
+
+## 3. `harness_probe.py` — 评分器公平性探针（实验 A）
+
+机器评分被默认"客观"，但**字面匹配的评分器会把正确但表述不同的答案判成错**。本工具完全离线量化这一点：取一批**已知正确**的 gold，程序化生成语义等价变体（加解释/格式包裹/中文↔阿拉伯数字/量词增减/同义词/全半角），用目标评分器判分，统计 false-negative 率。
+
+```bash
+python3 scripts/harness_probe.py --demo --compare                 # 内置样例
+python3 scripts/harness_probe.py bench.jsonl --gold-field gold --compare
+```
+
+### 实测结果（4 个真实基准 + demo）
+| 基准 | gold 数 | 严格字面匹配 fnr | FSP 规范化后 fnr |
+|---|---:|---:|---:|
+| demo（10 条典型 gold） | 10 | **0.735** | 0.0 |
+| fraud-detect-bench-zh | 144 | **0.714** | 0.0 |
+| agent-endurance-bench（330 探针） | 330 | **0.741** | 0.0 |
+| elderly（选择题 52） | 52 | **0.778** | 0.0 |
+| elderly（槽位 24） | 24 | **0.733** | 0.0 |
+
+**读法**：朴素字面匹配下，**约 71–78% 的"语义等价的正确答案"会被判错**。失效最重的类型是 `wrapped`（JSON/引号/code fence 包裹，100% 误判）与 `explained`（答对但附一句解释，100% 误判）——**这正是强模型最常见的输出形态**。
+
+**Fair Scoring Protocol（FSP）**：去 code fence → 取首行/JSON 值 → 中文数字规范化 → 去标点空白 → 全角转半角 → 同义归并 → 量词容忍。应用后 fnr 全部归零（在这批变体上）。
+
+> 边界：变体集由本工具定义，是**评分器脆弱性的下界探测**而非穷举；FSP 归零意味着"这 9 类它都能吃下"，不等于对开放式生成也公平。用它做回归测试：改评分器后重跑，fnr 不该上升。
+
 ## 自测
 `testdata/clean.jsonl`（0 发现，退出 0）与 `testdata/dirty.jsonl`（含蓄意的 dup + gold-leak + near-dup，退出 1）在 CI 中断言，防止扫描器自身回归。
 

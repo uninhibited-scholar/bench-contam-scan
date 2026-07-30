@@ -1,0 +1,100 @@
+{
+  "source": "demo",
+  "n_golds": 10,
+  "strict": {
+    "harness_fnr": 0.735,
+    "false_negatives": 61,
+    "variants_total": 83,
+    "by_variant_type": {
+      "case": "2/2 (1.0)",
+      "explained": "20/20 (1.0)",
+      "fullwidth": "2/2 (1.0)",
+      "identity": "0/10 (0.0)",
+      "numeral": "4/6 (0.667)",
+      "synonym": "1/1 (1.0)",
+      "unit": "2/2 (1.0)",
+      "whitespace": "0/10 (0.0)",
+      "wrapped": "30/30 (1.0)"
+    },
+    "examples": [
+      {
+        "gold": "B",
+        "type": "explained",
+        "variant": "答案是B"
+      },
+      {
+        "gold": "B",
+        "type": "explained",
+        "variant": "B\n\n（依据题意，选B）"
+      },
+      {
+        "gold": "B",
+        "type": "wrapped",
+        "variant": "\"B\""
+      },
+      {
+        "gold": "B",
+        "type": "wrapped",
+        "variant": "```\nB\n```"
+      },
+      {
+        "gold": "B",
+        "type": "wrapped",
+        "variant": "{\"answer\": \"B\"}"
+      },
+      {
+        "gold": "B",
+        "type": "case",
+        "variant": "b"
+      },
+      {
+        "gold": "B",
+        "type": "fullwidth",
+        "variant": "Ｂ"
+      },
+      {
+        "gold": "6860",
+        "type": "explained",
+        "variant": "答案是6860"
+      },
+      {
+        "gold": "6860",
+        "type": "explained",
+        "variant": "6860\n\n（依据题意，选6860）"
+      },
+      {
+        "gold": "6860",
+        "type": "wrapped",
+        "variant": "\"6860\""
+      },
+      {
+        "gold": "6860",
+        "type": "wrapped",
+        "variant": "```\n6860\n```"
+      },
+      {
+        "gold": "6860",
+        "type": "wrapped",
+        "variant": "{\"answer\": \"6860\"}"
+      }
+    ]
+  },
+  "fsp": {
+    "harness_fnr": 0.0,
+    "false_negatives": 0,
+    "variants_total": 83,
+    "by_variant_type": {
+      "case": "0/2 (0.0)",
+      "explained": "0/20 (0.0)",
+      "fullwidth": "0/2 (0.0)",
+      "identity": "0/10 (0.0)",
+      "numeral": "0/6 (0.0)",
+      "synonym": "0/1 (0.0)",
+      "unit": "0/2 (0.0)",
+      "whitespace": "0/10 (0.0)",
+      "wrapped": "0/30 (0.0)"
+    },
+    "examples": []
+  },
+  "fnr_reduction": 0.735
+}
