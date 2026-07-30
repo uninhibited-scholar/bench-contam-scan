@@ -18,6 +18,12 @@ JSONL 评测基准的离线污染/完整性扫描器。把 fraud/endurance 两�
 - [x] 最脆类型：wrapped(JSON/引号/fence) 与 explained(答对带解释) 均 100% 误判——正是强模型常见输出形态
 - [x] Fair Scoring Protocol 参考实现（score_fsp）
 
+## v1.1 实验B（已达成 ✅ 2026-07-19）
+- [x] harness_penalty.py：同批原始输出跑 strict vs FSP，算 harness_penalty
+- [x] H1 支持：槽位任务上 glm +0.167 / deepseek +0.125 / qwen0.5b +0.042（强模型受害约 3 倍）
+- [x] 负面结果1：intent 字段 penalty 全 0——FSP 只解表层形式，不解语义同义（需同义词表）
+- [x] 负面结果2：初版"只取首行"导致 glm penalty −0.042（宽松反而更低），已修为首行+全文回退
+
 ## 路线图
 - v1：probe_model.py（模型侧记忆启发式：给题面前半让模型续写，比对后半——高相似=疑似记忆）
 - v1：near_dup 分块/LSH，支持大基准；cross_overlap 支持目录批量 --against

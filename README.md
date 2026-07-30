@@ -68,6 +68,27 @@ python3 scripts/harness_probe.py bench.jsonl --gold-field gold --compare
 
 > 边界：变体集由本工具定义，是**评分器脆弱性的下界探测**而非穷举；FSP 归零意味着"这 9 类它都能吃下"，不等于对开放式生成也公平。用它做回归测试：改评分器后重跑，fnr 不该上升。
 
+
+
+## 4. `harness_penalty.py` — 评分器冤枉了谁（实验 B）
+
+同一批模型的**原始输出**，用严格字面匹配与 FSP 各评一次，`harness_penalty = fsp − strict`。
+
+### 实测（elderly 开放式槽位抽取，24 题 × 3 模型）
+| 模型 | strict | FSP | harness_penalty |
+|---|---:|---:|---:|
+| glm-5.2 | 0.833 | **1.0** | **+0.167** |
+| deepseek-v4-flash | 0.833 | 0.958 | **+0.125** |
+| qwen2.5-0.5b（本地小模型） | 0.75 | 0.792 | +0.042 |
+
+**H1 得到支持**：两个前沿模型被字面匹配扣掉 0.125–0.167，本地 0.5b 只扣 0.042（约 1/3）。强模型更爱把答案包在 JSON/解释里，因此更受害；小模型答错是真错，换评分器也救不回。
+
+### 两个诚实的负面结果（同样重要）
+1. **FSP 治不了"措辞不同"**：同一批数据的 `intent` 字段上，三个模型 penalty 全为 **0.0**——模型答"挂号"、gold 写"挂号看病"，规范化解决不了语义同义，必须靠同义词表/语义匹配。**FSP 只解决表层形式，不解决语义等价。**
+2. **只取首行会造成新的不公**：初版 FSP 仅取首行，导致长推理输出中命中的答案被截断，glm 出现 **penalty = −0.042**（宽松评分反而更低）。已修：首行严判 → 回退全文包含。这条本身就是"评分器公平性很难做对"的实证。
+
+复现：`python3 scripts/harness_penalty.py --gold <bench.jsonl> --gold-field <field> --pred name=<pred.jsonl>`
+
 ## 自测
 `testdata/clean.jsonl`（0 发现，退出 0）与 `testdata/dirty.jsonl`（含蓄意的 dup + gold-leak + near-dup，退出 1）在 CI 中断言，防止扫描器自身回归。
 

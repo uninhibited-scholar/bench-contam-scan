@@ -1,0 +1,73 @@
+{
+  "task": "elderly-slots slot_value",
+  "models": [
+    {
+      "model": "glm-5.2",
+      "n": 24,
+      "strict_score": 0.833,
+      "fsp_score": 1.0,
+      "harness_penalty": 0.167,
+      "rescued_examples": [
+        {
+          "id": "s007",
+          "gold": "这个月",
+          "output": "{\"intent\":\"查询退休金发放状态\",\"月份\":\"本月\"}"
+        },
+        {
+          "id": "s014",
+          "gold": "三路",
+          "output": "{\"intent\":\"查询公交到站时间\",\"线路\":\"3\"}"
+        },
+        {
+          "id": "s015",
+          "gold": "十六路",
+          "output": "{\"intent\":\"公交到站查询\",\"线路\":\"16路\"}"
+        },
+        {
+          "id": "s016",
+          "gold": "五路",
+          "output": "{\"intent\":\"查询公交到站时间\",\"线路\":\"5路\"}"
+        }
+      ]
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "n": 24,
+      "strict_score": 0.833,
+      "fsp_score": 0.958,
+      "harness_penalty": 0.125,
+      "rescued_examples": [
+        {
+          "id": "s014",
+          "gold": "三路",
+          "output": "{\"intent\":\"查询公交到站\",\"线路\":\"3路\"}"
+        },
+        {
+          "id": "s015",
+          "gold": "十六路",
+          "output": "{\"intent\":\"查询公交到站时间\",\"线路\":\"16路\"}"
+        },
+        {
+          "id": "s016",
+          "gold": "五路",
+          "output": "{\"intent\":\"查询公交到站时间\",\"线路\":\"5路\"}"
+        }
+      ]
+    },
+    {
+      "model": "qwen2.5-0.5b",
+      "n": 24,
+      "strict_score": 0.75,
+      "fsp_score": 0.792,
+      "harness_penalty": 0.042,
+      "rescued_examples": [
+        {
+          "id": "s014",
+          "gold": "三路",
+          "output": "{\"intent\":\"查找时间\",\"线路\":\"3路\"}"
+        }
+      ]
+    }
+  ],
+  "note": "harness_penalty = fsp_score - strict_score；越大表示被字面匹配冤枉越多"
+}

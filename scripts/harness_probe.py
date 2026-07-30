@@ -104,14 +104,32 @@ def _fsp_norm(s):
         first = first.replace(k, v)
     return first.lower()
 
+def _norm_full(s):
+    """全文规范化（不取首行）——用作 FSP 的回退，避免长推理输出被首行截断"""
+    s = re.sub(r"```[a-zA-Z]*\n?", "", str(s)).replace("```", "")
+    def cn2int(t):
+        if t == "十": return "10"
+        if "十" in t:
+            a, _, b = t.partition("十")
+            return str((_D.get(a, 1) if a else 1) * 10 + (_D.get(b, 0) if b else 0))
+        return "".join(str(_D[c]) if c in _D else c for c in t)
+    s = re.sub(r"[零一二两三四五六七八九十]+", lambda m: cn2int(m.group()), s)
+    s = re.sub(r"[\s\W_,]+", "", s)
+    s = "".join(chr(ord(c) - 0xFF21 + ord('A')) if 0xFF21 <= ord(c) <= 0xFF3A else c for c in s)
+    for k, v in [("本月", "这个月"), ("上月", "上个月")]:
+        s = s.replace(k, v)
+    return s.lower()
+
 def score_fsp(pred, gold):
-    """Fair Scoring Protocol：规范化后包含式匹配"""
-    p, g = _fsp_norm(pred), _fsp_norm(gold)
+    """Fair Scoring Protocol：先按首行/JSON 值严判，再回退全文包含。
+    回退是必需的——只取首行会让长推理输出中命中的答案被丢掉（实测反例见 PLAN）。"""
+    g = _fsp_norm(gold)
     if not g: return False
-    if p == g or g in p: return True
-    # 单位容忍：gold 去掉量词后再比
     gs = re.sub(r"(路|号|个|元|次|月)$", "", g)
-    return bool(gs) and (p == gs or gs in p)
+    for p in (_fsp_norm(pred), _norm_full(pred)):
+        if p == g or g in p: return True
+        if gs and (p == gs or gs in p): return True
+    return False
 
 SCORERS = {"strict": score_strict, "fsp": score_fsp}
 
